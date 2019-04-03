@@ -65,3 +65,21 @@ services:
       - kibana
     links:
       - kibana:kibana
+  mongodb:
+    image: ismi_mongo
+    restart: always
+    command: /usr/bin/mongod --smallfiles --config /etc/mongod.conf
+    volumes:
+      - mongodb:/var/lib/mongo
+    networks:
+      - default
+
+volumes:
+  elasticsearch:
+  rabbitmq:
+  mongodb:
+  cron:
+  geolite_db:
+
+networks:
+  default:
