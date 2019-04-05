@@ -14,7 +14,7 @@ services:
     depends_on:
       - logstash
     networks:
-      - ismi_network
+      - default
   logstash:
     image: wazuh/wazuh-logstash:3.8.2_6.5.4
     hostname: logstash
@@ -28,7 +28,7 @@ services:
     environment:
       - LS_HEAP_SIZE=2048m
     networks:
-      - ismi_network
+      - default
   elasticsearch:
     image: 374e0fdbeff3737901b0fb4a1747f891dd3f282a870034eb6545d68668009780
     hostname: elasticsearch
@@ -47,7 +47,7 @@ services:
         hard: -1
     mem_limit: 2g
     networks:
-      - ismi_network
+      - default
   kibana:
     image: wazuh/wazuh-kibana:3.8.2_6.5.4
     hostname: kibana
@@ -58,9 +58,9 @@ services:
       - elasticsearch:elasticsearch
       - wazuh:wazuh
     networks:
-      - ismi_network
+      - default
   nginx:
-    image: wazuh/wazuh-nginx:3.8.2_6.5.4
+    image: b2ce93fce0dfd40c2339c4a380bd1ff2b65687533dafd89273db0137b60503e5
     hostname: nginx
     restart: always
     environment:
@@ -73,16 +73,12 @@ services:
       - kibana
     links:
       - kibana:kibana
-    networks:
-      - ismi_network
   mongodb:
     image: a170dbb6eb2a2d6344eed092664eee7de129d0f29c8c93bd9856ef4ef9440a9f 
     restart: always
     command: /usr/bin/mongod --smallfiles --config /etc/mongod.conf
     volumes:
       - ismi_mongodb:/var/lib/mongo
-    networks:
-      - ismi_network
   rabbitmq:
     image: rabbitmq
     restart: always
@@ -93,13 +89,10 @@ services:
     #   - 5672:5672
     #   - 15672:15672 # Admin interface
     networks:
-      - ismi_network
+      - default
       
 volumes:
   ismi_mongodb:
     driver: local
   ismi_rabbitmq:
     driver: local
-    
-networks:
-  ismi_network:

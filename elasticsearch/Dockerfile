@@ -17,13 +17,9 @@ ADD https://raw.githubusercontent.com/wazuh/wazuh/$TEMPLATE_VERSION/extensions/e
 
 ADD https://raw.githubusercontent.com/billchalmers/test/master/elasticsearch/entrypoint.sh /entrypoint.sh
 
-#COPY config/entrypoint.sh /entrypoint.sh
-
 RUN chmod 755 /entrypoint.sh
 
 ADD https://raw.githubusercontent.com/billchalmers/test/master/elasticsearch/load_settings.sh /load_settings.sh
-
-#COPY --chown=elasticsearch:elasticsearch ./config/load_settings.sh ./
 
 RUN chmod +x /load_settings.sh
 
@@ -31,8 +27,9 @@ RUN elasticsearch-plugin install --batch repository-s3
 
 ADD https://raw.githubusercontent.com/billchalmers/test/master/elasticsearch/configure_s3.sh /configure_s3.sh
 
-#COPY config/configure_s3.sh ./config/configure_s3.sh
 RUN chmod 755 /configure_s3.sh
+
+VOLUME /var/lib/elasticsearch
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["elasticsearch"]
