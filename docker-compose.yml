@@ -3,7 +3,7 @@ version: '2'
 
 services:
   wazuh:
-    image: wazuh/wazuh:3.8.2_6.5.4
+    image: ismi_wazuh:latest
     hostname: wazuh-manager
     restart: always
     ports:
@@ -13,10 +13,8 @@ services:
       - "55000:55000"
     depends_on:
       - logstash
-    networks:
-      - default
   logstash:
-    image: wazuh/wazuh-logstash:3.8.2_6.5.4
+    image: ismi_logstash:latest
     hostname: logstash
     restart: always
     links:
@@ -27,10 +25,8 @@ services:
       - elasticsearch
     environment:
       - LS_HEAP_SIZE=2048m
-    networks:
-      - default
   elasticsearch:
-    image: 374e0fdbeff3737901b0fb4a1747f891dd3f282a870034eb6545d68668009780
+    image: ismi_elasticsearch:latest
     hostname: elasticsearch
     restart: always
     ports:
@@ -46,10 +42,8 @@ services:
         soft: -1
         hard: -1
     mem_limit: 2g
-    networks:
-      - default
   kibana:
-    image: wazuh/wazuh-kibana:3.8.2_6.5.4
+    image: ismi_kibana:latest
     hostname: kibana
     restart: always
     depends_on:
@@ -57,10 +51,8 @@ services:
     links:
       - elasticsearch:elasticsearch
       - wazuh:wazuh
-    networks:
-      - default
   nginx:
-    image: b2ce93fce0dfd40c2339c4a380bd1ff2b65687533dafd89273db0137b60503e5
+    image: ismi_nginx:latest
     hostname: nginx
     restart: always
     environment:
@@ -74,25 +66,6 @@ services:
     links:
       - kibana:kibana
   mongodb:
-    image: a170dbb6eb2a2d6344eed092664eee7de129d0f29c8c93bd9856ef4ef9440a9f 
+    image: ismi_mongodb:latest
+    hostname: mongodb
     restart: always
-    command: /usr/bin/mongod --smallfiles --config /etc/mongod.conf
-    volumes:
-      - ismi_mongodb:/var/lib/mongo
-  rabbitmq:
-    image: rabbitmq
-    restart: always
-    command: rabbitmq-server
-    volumes:
-      - ismi_rabbitmq:/var/lib/rabbitmq
-    # ports:
-    #   - 5672:5672
-    #   - 15672:15672 # Admin interface
-    networks:
-      - default
-      
-volumes:
-  ismi_mongodb:
-    driver: local
-  ismi_rabbitmq:
-    driver: local

@@ -7,6 +7,6 @@ RUN chmod 755 /entrypoint.sh
 
 RUN rm -f /usr/share/logstash/pipeline/logstash.conf
 
-ADD https://raw.githubusercontent.com/billchalmers/test/master/logstash/01-wazuh.conf /usr/share/logstash/pipeline/01-wazuh.conf
+ADD --chown=logstash:logstash https://raw.githubusercontent.com/billchalmers/test/master/logstash/01-wazuh.conf /usr/share/logstash/pipeline/01-wazuh.conf
 
 ENTRYPOINT /entrypoint.sh
