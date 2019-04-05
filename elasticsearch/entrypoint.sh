@@ -43,7 +43,7 @@ fi
 
 # Run load settings script.
 
-./load_settings.sh &
+/load_settings.sh &
 
 # Execute elasticsearch
 
