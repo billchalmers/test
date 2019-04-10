@@ -1,0 +1,1 @@
+FROM jtschichold/minemeld:latest
